@@ -45,10 +45,6 @@ const Aside = ({ isCollapsed = false, onExpand, onClose, isMobile = false }: Asi
         if (isMobile && onClose) onClose();
     };
 
-    const handleCloseClick = () => {
-        if (onClose) onClose();
-    }
-
     const displayCollapsed = isMobile ? false : isCollapsed;
 
     return (
@@ -81,26 +77,6 @@ const Aside = ({ isCollapsed = false, onExpand, onClose, isMobile = false }: Asi
                         >
                             Logo
                         </div>
-                        <button 
-                            onClick={handleCloseClick} 
-                            className="p-2 rounded-lg"
-                            style={{
-                                backgroundColor: 'var(--color-aside-active-background)',
-                                opacity: 0.1
-                            }}
-                        >
-                            <svg 
-                                className="w-4 h-4" 
-                                fill="none" 
-                                stroke="currentColor" 
-                                viewBox="0 0 24 24"
-                                style={{
-                                    color: 'var(--color-aside-text)'
-                                }}
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
                     </div>
                 )}
                 {!isMobile && (
@@ -120,8 +96,8 @@ const Aside = ({ isCollapsed = false, onExpand, onClose, isMobile = false }: Asi
                     [scrollbar-gutter:stable]
                     [&::-webkit-scrollbar]:w-1
                     [&::-webkit-scrollbar-track]:bg-transparent
-                    [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:hover:bg-gray-400
-                    dark:[&::-webkit-scrollbar-thumb]:bg-[#27272A] dark:[&::-webkit-scrollbar-thumb]:hover:bg-[#3c3c3c]
+                    [&::-webkit-scrollbar-thumb]:bg-[var(--color-aside-scrollbar-thumb)] 
+                    [&::-webkit-scrollbar-thumb]:hover:bg-[var(--color-aside-scrollbar-thumb-hover)]
                     ${displayCollapsed ? 'overflow-visible': 'overflow-y-auto overflow-x-hidden'}
                     pr-2 -mr-5  
                 `}>
@@ -150,7 +126,7 @@ const Aside = ({ isCollapsed = false, onExpand, onClose, isMobile = false }: Asi
                                                 <TooltipTrigger asChild>
                                                     <Link
                                                         to={item.to ?? '#'}
-                                                        className={`flex items-center px-3 py-3 w-full rounded-md cursor-pointer transition-colors
+                                                        className={`flex items-center px-3 py-3 w-full rounded-md cursor-pointer 
                                                             ${displayCollapsed ? 'justify-center' : 'justify-start gap-2'}
                                                         `}
                                                         style={{

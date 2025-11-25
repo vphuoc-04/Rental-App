@@ -14,9 +14,10 @@ import { colorThemes } from "@/constants/colors";
 interface HeaderProps {
     onToggleAside: () => void;
     isMobile?: boolean;
+    onOpenSheet?: () => void; 
 }
 
-const Header = ({ onToggleAside, isMobile = false }: HeaderProps) => {
+const Header = ({ onToggleAside, isMobile = false, onOpenSheet }: HeaderProps) => {
     const { theme, toggleTheme, colorTheme, setColorTheme } = useTheme();
 
     const handleResetToDefault = () => {
@@ -77,7 +78,6 @@ const Header = ({ onToggleAside, isMobile = false }: HeaderProps) => {
                             <FaAlignLeft className="text-gray-600 dark:text-white" />
                         )}
                     </button>
-                    
                 </div>
               
                 <button
@@ -92,15 +92,25 @@ const Header = ({ onToggleAside, isMobile = false }: HeaderProps) => {
                     )}
                 </button>
 
-                <CustomPopover 
-                    icons={<FaPalette />}
-                    title="Tùy chỉnh giao diện"
-                    description="Chọn các màu có sẵn mà bạn thích"
-                    className="p-2 rounded-lg bg-gray-100 dark:bg-[#27272A] hover:bg-gray-200 dark:hover:bg-[#424247] cursor-pointer"
-                    actions={resetAction}
-                >
-                    {colorThemeContent}
-                </CustomPopover>
+                {isMobile ? (
+                    <button
+                        onClick={onOpenSheet}
+                        className="p-2 rounded-lg bg-gray-100 dark:bg-[#27272A] hover:bg-gray-200 dark:hover:bg-[#424247] cursor-pointer"
+                        aria-label="Tùy chỉnh giao diện"
+                    >
+                        <FaPalette className="text-gray-600 dark:text-white" />
+                    </button>
+                ) : (
+                    <CustomPopover 
+                        icons={<FaPalette />}
+                        title="Tùy chỉnh giao diện"
+                        description="Chọn các màu có sẵn mà bạn thích"
+                        className="p-2 rounded-lg bg-gray-100 dark:bg-[#27272A] hover:bg-gray-200 dark:hover:bg-[#424247] cursor-pointer"
+                        actions={resetAction}
+                    >
+                        {colorThemeContent}
+                    </CustomPopover>
+                )}
             </div>
         </div>
     )

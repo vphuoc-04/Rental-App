@@ -41,6 +41,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         root.style.setProperty('--color-aside-text', currentColors.asideText);
         root.style.setProperty('--color-aside-active-text', currentColors.asideActiveText);
         root.style.setProperty('--color-aside-active-background', currentColors.asideActiveBackground);
+        root.style.setProperty('--color-aside-scrollbar-thumb', currentColors.asideScrollbarThumb);
+        root.style.setProperty('--color-aside-scrollbar-thumb-hover', currentColors.asideScrollbarThumbHover);
+        root.style.setProperty('--sheet-close-icon-color', currentColors.closeSheetIcon);
     }, [colorTheme, theme]);
 
     const toggleTheme = () => {

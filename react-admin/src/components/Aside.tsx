@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
     Accordion,
@@ -7,6 +6,13 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { asideItem } from "@/constants/aside"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useState } from "react";
 
 interface AsideProps {
     isCollapsed?: boolean;
@@ -18,164 +24,263 @@ interface AsideProps {
 const Aside = ({ isCollapsed = false, onExpand, onClose, isMobile = false }: AsideProps) => {
     const location = useLocation();
     const segment = location.pathname.split('/')[2]
-
-    useEffect(() => {
-        console.log(segment);
-    }, [segment]);
-
-    useEffect(() => {
-        console.log("Aside props:", { isCollapsed, isMobile, onClose: !!onClose });
-    }, [isCollapsed, isMobile, onClose]);
+    const [forceCloseTooltips, setForceCloseTooltips] = useState(false);
 
     const handleNormalItemClick = () => {
+        setForceCloseTooltips(true);
+        setTimeout(() => setForceCloseTooltips(false), 100);
+        
         if (isCollapsed && onExpand) onExpand();
-        if (isMobile && onClose) onClose(); // mobile → close
+        if (isMobile && onClose) onClose();
     };
 
     const handleTriggerClick = () => {
+        setForceCloseTooltips(true);
+        setTimeout(() => setForceCloseTooltips(false), 100);
+        
         if (isCollapsed && onExpand) onExpand();
     };
-
 
     const handleSubItemClick = () => {
         if (isMobile && onClose) onClose();
     };
 
     const handleCloseClick = () => {
-        if (onClose) {
-            onClose();
-        }
+        if (onClose) onClose();
     }
+
     const displayCollapsed = isMobile ? false : isCollapsed;
 
     return (
-        <div className={`
-            min-h-screen bg-white dark:bg-[#18181b] text-gray-900 dark:text-white p-5 flex flex-col overflow-y-auto
-            border-r border-gray-200 dark:border-gray-700
-            transition-all duration-300 ease-in-out
-            [scrollbar-gutter:stable]
-            [&::-webkit-scrollbar]:w-1
-            [&::-webkit-scrollbar-track]:bg-transparent
-            [&::-webkit-scrollbar-thumb]:bg-gray-300
-            [&::-webkit-scrollbar-thumb]:hover:bg-gray-400
-            dark:[&::-webkit-scrollbar-thumb]:bg-[#27272A]
-            dark:[&::-webkit-scrollbar-thumb]:hover:bg-[#3c3c3c]
-            ${isMobile ? 'w-70 fixed left-0 top-0 z-50 lg:relative lg:w-auto' : ''}
-            ${displayCollapsed ? 'w-20' : 'w-70'}
-        `}>
-            {isMobile && (
-                <div className="flex items-center justify-between mb-5 pb-2 border-b border-gray-200 dark:border-gray-700">
-                    <div className="text-lg font-bold">Logo</div>
-                    <button
-                        onClick={handleCloseClick}
-                        className="p-2 rounded-lg bg-gray-100 dark:bg-[#27272A]"
+        <TooltipProvider delayDuration={0}>
+            <div 
+                className={`
+                    h-screen max-h-screen 
+                    p-5 flex flex-col
+                    border-r border-gray-200 dark:border-gray-700
+                    ${isMobile ? 'w-full' : 'transition-[width] duration-500 ease-in-out'}
+                    ${displayCollapsed ? 'w-20' : 'w-70'}
+                `}
+                style={{
+                    backgroundColor: 'var(--color-aside-background)'
+                }}
+            >
+                {isMobile && (
+                    <div 
+                        className="flex items-center justify-between mb-5 pb-2 border-b"
+                        style={{
+                            borderColor: 'var(--color-aside-text)',
+                            opacity: 0.3
+                        }}
                     >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-            )}
-
-            {!isMobile && (
-                <div className={`text-lg font-bold mb-5 ${displayCollapsed ? "text-center" : ""}`}>
-                    {displayCollapsed ? "L" : "Logo"}
-                </div>
-            )}
-          
-            <div className="main-sidebar">
-                {asideItem.map((group, index) => (
-                    <div className="pt-5 pb-3" key={index}>
-                        {!displayCollapsed && (
-                            <span className="text-[13px] text-gray-500 dark:text-gray-400">
-                                {group.label}
-                            </span>
-                        )}
-                        <div className="menu-category my-3">
-                            <Accordion type="single" collapsible className="sidebar-accordion flex flex-col gap-y-1" defaultValue="">
-                                {group.items.map((item, itemIndex) => (
-                                    item.links.length === 0 ? (
-                                        <Link
-                                            key={itemIndex}
-                                            to={item.to ?? '#'}
-                                            className={`flex items-center px-3 py-3 w-full rounded-md cursor-pointer transition-colors duration-200
-                                                ${displayCollapsed ? 'justify-center' : 'justify-start gap-2'}
-                                                ${item.active.includes(segment)
-                                                    ? 'text-black bg-gray-100 dark:bg-[#27272A] dark:text-white'
-                                                    : 'text-gray-950 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#27272A]'}
-                                            `}
-                                            title={displayCollapsed ? item.label : undefined}
-                                            onClick={handleNormalItemClick}
-                                        >
-                                            <div className="flex-shrink-0">
-                                                {item.icon}
-                                            </div>
-                                            {!displayCollapsed && (
-                                                <span className="whitespace-nowrap">{item.label}</span>
-                                            )}
-                                        </Link>
-                                    ) : (
-                                        <AccordionItem key={itemIndex} value={`item-${index}-${itemIndex}`} className="border-b-0">
-                                            <AccordionTrigger
-                                                className={`
-                                                    flex items-center px-3 py-0 w-full cursor-pointer transition-colors duration-200
-                                                    [&>svg]:stroke-gray-600 dark:[&>svg]:stroke-gray-300
-                                                    [&>svg]:transition-colors [&>svg]:duration-200
-                                                    hover:no-underline
-                                                    ${displayCollapsed ? 'justify-center [&>svg]:hidden' : 'justify-start gap-2'}
-                                                    ${item.active.includes(segment)
-                                                        ? 'text-black bg-gray-100 dark:bg-[#27272A] dark:text-white'
-                                                        : 'text-gray-950 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#27272A]'}
-                                                `}
-                                                title={displayCollapsed ? item.label : undefined}
-                                                onClick={handleTriggerClick}
-                                            >
-                                                <div className={`menu-label flex items-center rounded-md py-3 no-underline
-                                                    ${displayCollapsed ? 'w-auto justify-center' : 'w-50 gap-2'}
-                                                `}>
-                                                    <div className="flex-shrink-0">
-                                                        {item.icon}
-                                                    </div>
-                                                    {!displayCollapsed && (
-                                                        <span className="no-underline whitespace-nowrap">{item.label}</span>
-                                                    )}
-                                                </div>
-                                            </AccordionTrigger>
-                                            {!displayCollapsed && (
-                                                <AccordionContent className="mt-2">
-                                                    <ul className="flex flex-col gap-2 ml-7 text-[15px]">
-                                                        {item.links.map((link, linkIndex) => {
-                                                            const isActiveLink = location.pathname === link.to;
-                                                            return (
-                                                                <li key={linkIndex}>
-                                                                    <Link to={link.to}>
-                                                                        <p
-                                                                            className={`
-                                                                                py-3 pl-3 w-full rounded-[5px] transition-colors duration-200
-                                                                                ${isActiveLink
-                                                                                    ? 'text-black bg-gray-100 dark:bg-[#27272A] dark:text-white'
-                                                                                    : 'text-gray-950 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#27272A]'}
-                                                                            `}
-                                                                            onClick={handleSubItemClick}
-                                                                        >
-                                                                            {link.label}
-                                                                        </p>
-                                                                    </Link>
-                                                                </li>
-                                                            );
-                                                        })}
-                                                    </ul>
-                                                </AccordionContent>
-                                            )}
-                                        </AccordionItem>
-                                    )
-                                ))}
-                            </Accordion>
+                        <div 
+                            className="text-lg font-bold"
+                            style={{
+                                color: 'var(--color-aside-text)'
+                            }}
+                        >
+                            Logo
                         </div>
+                        <button 
+                            onClick={handleCloseClick} 
+                            className="p-2 rounded-lg"
+                            style={{
+                                backgroundColor: 'var(--color-aside-active-background)',
+                                opacity: 0.1
+                            }}
+                        >
+                            <svg 
+                                className="w-4 h-4" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                viewBox="0 0 24 24"
+                                style={{
+                                    color: 'var(--color-aside-text)'
+                                }}
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                     </div>
-                ))}
+                )}
+                {!isMobile && (
+                    <div 
+                        className={`text-lg font-bold mb-5 ease-in-out pb-4 border-b-2 ${displayCollapsed ? "text-center" : ""}`}
+                        style={{
+                            color: 'var(--color-aside-text)',
+                            borderColor: 'var(--color-aside-active-background)'
+                        }}
+                    >
+                        {displayCollapsed ? "L" : "Logo"}
+                    </div>
+                )}
+
+                <div className={`
+                    main-sidebar flex-1 
+                    [scrollbar-gutter:stable]
+                    [&::-webkit-scrollbar]:w-1
+                    [&::-webkit-scrollbar-track]:bg-transparent
+                    [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:hover:bg-gray-400
+                    dark:[&::-webkit-scrollbar-thumb]:bg-[#27272A] dark:[&::-webkit-scrollbar-thumb]:hover:bg-[#3c3c3c]
+                    ${displayCollapsed ? 'overflow-visible': 'overflow-y-auto overflow-x-hidden'}
+                    pr-2 -mr-5  
+                `}>
+                    {asideItem.map((group, index) => (
+                        <div className="pb-5" key={index}>
+                            {!displayCollapsed && (
+                                <span 
+                                    className="text-[13px]"
+                                    style={{
+                                        color: 'var(--color-aside-text)',
+                                        opacity: 0.7
+                                    }}
+                                >
+                                    {group.label}
+                                </span>
+                            )}
+                            <div className="menu-category my-3">
+                                <Accordion type="single" collapsible className="sidebar-accordion flex flex-col gap-y-1">
+                                    {group.items.map((item, itemIndex) => (
+                                        item.links.length === 0 ? (
+                                            <Tooltip 
+                                                key={itemIndex} 
+                                                delayDuration={0}
+                                                open={displayCollapsed && !forceCloseTooltips ? undefined : false}
+                                            >
+                                                <TooltipTrigger asChild>
+                                                    <Link
+                                                        to={item.to ?? '#'}
+                                                        className={`flex items-center px-3 py-3 w-full rounded-md cursor-pointer transition-colors
+                                                            ${displayCollapsed ? 'justify-center' : 'justify-start gap-2'}
+                                                        `}
+                                                        style={{
+                                                            color: item.active.includes(segment)
+                                                                ? 'var(--color-aside-active-text)'
+                                                                : 'var(--color-aside-text)',
+                                                            backgroundColor: item.active.includes(segment)
+                                                                ? 'var(--color-aside-active-background)'
+                                                                : 'transparent'
+                                                        }}
+                                                        onClick={handleNormalItemClick}
+                                                    >
+                                                        <div 
+                                                            className="flex-shrink-0"
+                                                            style={{
+                                                                color: item.active.includes(segment)
+                                                                    ? 'var(--color-aside-active-text)'
+                                                                    : 'var(--color-aside-text)'
+                                                            }}
+                                                        >
+                                                            {item.icon}
+                                                        </div>
+                                                        {!displayCollapsed && (
+                                                            <span className="whitespace-nowrap">{item.label}</span>
+                                                        )}
+                                                    </Link>
+                                                </TooltipTrigger>
+                                                {displayCollapsed && (
+                                                    <TooltipContent 
+                                                        side="right" 
+                                                        align="center"
+                                                        className="bg-black text-white dark:bg-white dark:text-black text-xs rounded-md py-2 px-3 shadow-lg z-50"
+                                                    >
+                                                        {item.label}
+                                                    </TooltipContent>
+                                                )}
+                                            </Tooltip>
+                                        ) : (
+                                            <AccordionItem key={itemIndex} value={`item-${index}-${itemIndex}`} className="border-b-0">
+                                                <Tooltip 
+                                                    delayDuration={0}
+                                                    open={displayCollapsed && !forceCloseTooltips ? undefined : false}
+                                                >
+                                                    <TooltipTrigger asChild>
+                                                        <AccordionTrigger
+                                                            className={`
+                                                                flex items-center px-3 py-0 w-full cursor-pointer
+                                                                hover:no-underline
+                                                                ${displayCollapsed ? 'justify-center [&>svg]:hidden' : 'justify-start gap-2'}
+                                                            `}
+                                                            style={{
+                                                                color: item.active.includes(segment)
+                                                                    ? 'var(--color-aside-active-text)'
+                                                                    : 'var(--color-aside-text)',
+                                                                backgroundColor: item.active.includes(segment)
+                                                                    ? 'var(--color-aside-active-background)'
+                                                                    : 'transparent'
+                                                            }}
+                                                            onClick={handleTriggerClick}
+                                                        >
+                                                            <div className={`menu-label flex items-center rounded-md py-3 no-underline
+                                                                ${displayCollapsed ? 'w-auto justify-center' : 'w-50 gap-2'}
+                                                            `}>
+                                                                <div 
+                                                                    className="flex-shrink-0"
+                                                                    style={{
+                                                                        color: item.active.includes(segment)
+                                                                            ? 'var(--color-aside-active-text)'
+                                                                            : 'var(--color-aside-text)'
+                                                                    }}
+                                                                >
+                                                                    {item.icon}
+                                                                </div>
+                                                                {!displayCollapsed && (
+                                                                    <span className="no-underline whitespace-nowrap">{item.label}</span>
+                                                                )}
+                                                            </div>
+                                                        </AccordionTrigger>
+                                                    </TooltipTrigger>
+                                                    {displayCollapsed && (
+                                                        <TooltipContent 
+                                                            side="right" 
+                                                            align="center"
+                                                            className="bg-black text-white dark:bg-white dark:text-black text-xs rounded-md py-2 px-3 shadow-lg z-50"
+                                                        >
+                                                            {item.label}
+                                                        </TooltipContent>
+                                                    )}
+                                                </Tooltip>
+
+                                                {!displayCollapsed && (
+                                                    <AccordionContent className="mt-2">
+                                                        <ul className="flex flex-col gap-2 ml-7 text-[15px]">
+                                                            {item.links.map((link, linkIndex) => {
+                                                                const isActiveLink = location.pathname === link.to;
+                                                                return (
+                                                                    <li key={linkIndex}>
+                                                                        <Link to={link.to}>
+                                                                            <p
+                                                                                className={`py-3 pl-3 w-full rounded-[5px] transition-colors
+                                                                                `}
+                                                                                style={{
+                                                                                    color: isActiveLink
+                                                                                        ? 'var(--color-aside-active-text)'
+                                                                                        : 'var(--color-aside-text)',
+                                                                                    backgroundColor: isActiveLink
+                                                                                        ? 'var(--color-aside-active-background)'
+                                                                                        : 'transparent'
+                                                                                }}
+                                                                                onClick={handleSubItemClick}
+                                                                            >
+                                                                                {link.label}
+                                                                            </p>
+                                                                        </Link>
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                        </ul>
+                                                    </AccordionContent>
+                                                )}
+                                            </AccordionItem>
+                                        )
+                                    ))}
+                                </Accordion>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
-        </div>
+        </TooltipProvider>
     )
 }
 

@@ -10,7 +10,7 @@ const Layout = () => {
 
     const toggleAside = () => {
         if (isMobile) {
-            setIsCollapsed(false)
+            setIsCollapsed(prev => !prev)
         } else {
             setIsCollapsed(prev => !prev)
         }
@@ -42,15 +42,17 @@ const Layout = () => {
 
             {isMobile && !isCollapsed && (
                 <div
-                    className="fixed inset-0 bg-[rgba(0,0,0,0.7)]"
+                    className="fixed inset-0 bg-[rgba(0,0,0,0.7)] transition-opacity duration-500 ease-in-out"
                     onClick={closeAside}
                 />
             )}
 
             <div className={`
-                transition-transform duration-300 ease-in-out
-                ${isMobile ? "fixed inset-y-0 left-0 z-50 w-70" : ""}
-                ${isMobile && isCollapsed ? "-translate-x-full" : ""}
+                ${isMobile 
+                    ? "fixed inset-y-0 left-0 z-50 w-70 transition-transform duration-500 ease-in-out" 
+                    : "transition-[width] duration-500 ease-in-out"
+                }
+                ${isMobile && isCollapsed ? "-translate-x-full" : "translate-x-0"}
                 ${!isMobile ? (isCollapsed ? "w-20" : "w-70") : ""}
             `}>
                 <Aside
@@ -61,7 +63,7 @@ const Layout = () => {
                 />
             </div>
 
-            <div className="flex-1 bg-gray-100 dark:bg-[#000000] flex flex-col transition-all duration-300 lg:min-w-0">
+            <div className="flex-1 bg-gray-100 dark:bg-[#000000] flex flex-col lg:min-w-0 transition-[margin] duration-500 ease-in-out">
                 <Header isMobile={isMobile} onToggleAside={toggleAside} />
 
                 <div className="flex-1 overflow-y-auto">

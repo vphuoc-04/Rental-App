@@ -1,11 +1,11 @@
 export const breadcrumb = {
     items: [
         {
-            title: "TỔNG BÁO CÁO",
+            title: "Tổng báo cáo",
             route: ""
         },
         {
-            title: "TRANG QUẢN LÝ TỔNG BÁO CÁO",
+            title: "Trang quản lý tổng báo cáo",
             route: "/admin/dashboard"
         }
     ],

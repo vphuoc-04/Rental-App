@@ -19,7 +19,7 @@ const PageHeading: React.FC<PageHeadingProps> = ({ breadcrumb }) => {
     return (
         <div className="page-heading py-[20px] shadow-sm bg-white dark:bg-[#18181b] text-gray-900 dark:text-white">
             <div className="px-[15px]">
-                <h2 className="text-[24px] mb-[5px]">{last?.title ?? ""}</h2>
+                <h2 className="text-[24px] mb-[5px] uppercase">{last?.title ?? ""}</h2>
                 <Breadcrumb>
                     <BreadcrumbList>
                         {crumbs.map((item, index) => (

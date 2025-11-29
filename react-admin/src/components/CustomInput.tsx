@@ -17,13 +17,15 @@ const CustomInput = ({ label, name, type, placeholder, errors, register, rules, 
     return (
         <>
             <div className="items-center gap-4">
-                <Label htmlFor={name} className="text-left">{label}</Label>
+                <Label htmlFor={name} className="text-left text-[var(--color-text-primary)]">
+                    {label}
+                </Label>
                 <Input 
                     name={name}
                     type={type ?? 'text'} 
                     placeholder={placeholder}
                     id={name} 
-                    className="col-span-3 border border-gray-300 rounded py-5 px-3 focus:border-[#1e3070] transition" 
+                    className="col-span-3 border border-[var(--color-border)] rounded py-5 px-3 focus:border-[var(--color-primary)] transition text-[var(--color-text-primary)] bg-[var(--color-background)]" 
                     {...register(name, rules)}
                     defaultValue={defaultValue || ''}
                     disabled={disabled}

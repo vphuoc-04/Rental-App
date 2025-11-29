@@ -16,8 +16,8 @@ const CustomButton = ({type, loading, text, disabled = false }: CustomButtonProp
             className={`
                 w-full py-2 rounded transition-colors
                 ${isDisabled 
-                  ? "bg-gray-400 text-gray-200 opacity-60 !cursor-not-allowed" 
-                  : "bg-[#18181b] text-white cursor-pointer hover:bg-[#2a2a2d]"}
+                  ? "bg-[var(--color-text-tertiary)] text-[var(--color-text-secondary)] opacity-60 !cursor-not-allowed" 
+                  : "bg-[var(--color-primary)] text-white cursor-pointer hover:bg-[var(--color-hover)]"}
             `}
             type={type}
             disabled={isDisabled}

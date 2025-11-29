@@ -54,26 +54,17 @@ const Aside = ({ isCollapsed = false, onExpand, onClose, isMobile = false }: Asi
                     h-screen max-h-screen 
                     p-5 flex flex-col
                     border-r border-gray-200 dark:border-gray-700
+                    bg-[var(--color-aside-background)]
                     ${isMobile ? 'w-full' : 'transition-[width] duration-500 ease-in-out'}
-                    ${displayCollapsed ? 'w-20' : 'w-70'}
+                    ${displayCollapsed ? 'w-20' : 'w-65'}
                 `}
-                style={{
-                    backgroundColor: 'var(--color-aside-background)'
-                }}
             >
                 {isMobile && (
                     <div 
-                        className="flex items-center justify-between mb-5 pb-2 border-b"
-                        style={{
-                            borderColor: 'var(--color-aside-text)',
-                            opacity: 0.3
-                        }}
+                        className="flex items-center justify-between mb-5 pb-2 border-b border-[var(--color-aside-text)] opacity-30"
                     >
                         <div 
-                            className="text-lg font-bold"
-                            style={{
-                                color: 'var(--color-aside-text)'
-                            }}
+                            className="text-lg font-bold text-[var(--color-aside-text)]"
                         >
                             Logo
                         </div>
@@ -81,11 +72,12 @@ const Aside = ({ isCollapsed = false, onExpand, onClose, isMobile = false }: Asi
                 )}
                 {!isMobile && (
                     <div 
-                        className={`text-lg font-bold mb-5 ease-in-out pb-4 border-b-2 ${displayCollapsed ? "text-center" : ""}`}
-                        style={{
-                            color: 'var(--color-aside-text)',
-                            borderColor: 'var(--color-aside-active-background)'
-                        }}
+                        className={`
+                            text-lg font-bold mb-5 ease-in-out pb-4 border-b-2 
+                            text-[var(--color-aside-text)]
+                            border-[var(--color-aside-active-background)]
+                            ${displayCollapsed ? "text-center" : ""}`
+                        }
                     >
                         {displayCollapsed ? "L" : "Logo"}
                     </div>
@@ -102,14 +94,10 @@ const Aside = ({ isCollapsed = false, onExpand, onClose, isMobile = false }: Asi
                     pr-2 -mr-5  
                 `}>
                     {asideItem.map((group, index) => (
-                        <div className="pb-5" key={index}>
+                        <div className="pb-3" key={index}>
                             {!displayCollapsed && (
                                 <span 
-                                    className="text-[13px]"
-                                    style={{
-                                        color: 'var(--color-aside-text)',
-                                        opacity: 0.7
-                                    }}
+                                    className="text-[13px] text-[var(--color-aside-text)] opacity-70"
                                 >
                                     {group.label}
                                 </span>
@@ -126,26 +114,22 @@ const Aside = ({ isCollapsed = false, onExpand, onClose, isMobile = false }: Asi
                                                 <TooltipTrigger asChild>
                                                     <Link
                                                         to={item.to ?? '#'}
-                                                        className={`flex items-center px-3 py-3 w-full rounded-md cursor-pointer 
+                                                        className={`flex items-center px-3 py-2 w-full rounded-md cursor-pointer 
+                                                            hover:bg-[var(--color-aside-active-background)]
                                                             ${displayCollapsed ? 'justify-center' : 'justify-start gap-2'}
+                                                            ${item.active.includes(segment) 
+                                                                ? 'text-[var(--color-aside-active-text)] bg-[var(--color-aside-active-background)]' 
+                                                                : 'text-[var(--color-aside-text)]'
+                                                            }
                                                         `}
-                                                        style={{
-                                                            color: item.active.includes(segment)
-                                                                ? 'var(--color-aside-active-text)'
-                                                                : 'var(--color-aside-text)',
-                                                            backgroundColor: item.active.includes(segment)
-                                                                ? 'var(--color-aside-active-background)'
-                                                                : 'transparent'
-                                                        }}
                                                         onClick={handleNormalItemClick}
                                                     >
                                                         <div 
-                                                            className="flex-shrink-0"
-                                                            style={{
-                                                                color: item.active.includes(segment)
-                                                                    ? 'var(--color-aside-active-text)'
-                                                                    : 'var(--color-aside-text)'
-                                                            }}
+                                                            className={`flex-shrink-0 ${
+                                                                item.active.includes(segment)
+                                                                    ? 'text-[var(--color-aside-active-text)]'
+                                                                    : 'text-[var(--color-aside-text)]'
+                                                            }`}
                                                         >
                                                             {item.icon}
                                                         </div>
@@ -175,28 +159,24 @@ const Aside = ({ isCollapsed = false, onExpand, onClose, isMobile = false }: Asi
                                                             className={`
                                                                 flex items-center px-3 py-0 w-full cursor-pointer
                                                                 hover:no-underline
+                                                                hover:bg-[var(--color-aside-active-background)]
                                                                 ${displayCollapsed ? 'justify-center [&>svg]:hidden' : 'justify-start gap-2'}
+                                                                ${item.active.includes(segment)
+                                                                    ? 'text-[var(--color-aside-active-text)] bg-[var(--color-aside-active-background)]'
+                                                                    : 'text-[var(--color-aside-text)]'
+                                                                }
                                                             `}
-                                                            style={{
-                                                                color: item.active.includes(segment)
-                                                                    ? 'var(--color-aside-active-text)'
-                                                                    : 'var(--color-aside-text)',
-                                                                backgroundColor: item.active.includes(segment)
-                                                                    ? 'var(--color-aside-active-background)'
-                                                                    : 'transparent'
-                                                            }}
                                                             onClick={handleTriggerClick}
                                                         >
                                                             <div className={`menu-label flex items-center rounded-md py-3 no-underline
                                                                 ${displayCollapsed ? 'w-auto justify-center' : 'w-50 gap-2'}
                                                             `}>
                                                                 <div 
-                                                                    className="flex-shrink-0"
-                                                                    style={{
-                                                                        color: item.active.includes(segment)
-                                                                            ? 'var(--color-aside-active-text)'
-                                                                            : 'var(--color-aside-text)'
-                                                                    }}
+                                                                    className={`flex-shrink-0 ${
+                                                                        item.active.includes(segment)
+                                                                            ? 'text-[var(--color-aside-active-text)]'
+                                                                            : 'text-[var(--color-aside-text)]'
+                                                                    }`}
                                                                 >
                                                                     {item.icon}
                                                                 </div>
@@ -226,16 +206,14 @@ const Aside = ({ isCollapsed = false, onExpand, onClose, isMobile = false }: Asi
                                                                     <li key={linkIndex}>
                                                                         <Link to={link.to}>
                                                                             <p
-                                                                                className={`py-3 pl-3 w-full rounded-[5px] transition-colors
+                                                                                className={`
+                                                                                    py-2 pl-3 w-full rounded-[5px] 
+                                                                                    hover:bg-[var(--color-aside-active-background)]
+                                                                                    ${isActiveLink
+                                                                                        ? 'text-[var(--color-aside-active-text)] bg-[var(--color-aside-active-background)]'
+                                                                                        : 'text-[var(--color-aside-text)]'
+                                                                                    }
                                                                                 `}
-                                                                                style={{
-                                                                                    color: isActiveLink
-                                                                                        ? 'var(--color-aside-active-text)'
-                                                                                        : 'var(--color-aside-text)',
-                                                                                    backgroundColor: isActiveLink
-                                                                                        ? 'var(--color-aside-active-background)'
-                                                                                        : 'transparent'
-                                                                                }}
                                                                                 onClick={handleSubItemClick}
                                                                             >
                                                                                 {link.label}

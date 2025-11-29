@@ -30,17 +30,14 @@ const CustomSheet = ({
     return (
         <Sheet open={isSheetOpen} onOpenChange={closeSheet}>
             <SheetContent 
-                className={className}
+                className={`bg-[var(--color-background)] border-[var(--color-border)] text-[var(--color-icon)] ${className}`}
                 side={side}
-                style={{
-                    color: 'var(--sheet-close-icon-color)'
-                } as React.CSSProperties}
             >
                 {showHeader && (title || description) && (
                     <SheetHeader>
-                        {title && <SheetTitle>{title}</SheetTitle>}
+                        {title && <SheetTitle className="text-[var(--color-text-primary)]">{title}</SheetTitle>}
                         {description && (
-                            <SheetDescription>
+                            <SheetDescription className="text-[var(--color-text-secondary)]">
                                 {description}
                             </SheetDescription>
                         )}

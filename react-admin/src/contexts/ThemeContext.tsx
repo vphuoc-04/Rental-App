@@ -36,14 +36,36 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         const currentColors = colorTheme[theme];
         
         root.style.setProperty('--color-primary', currentColors.primary);
+        
         root.style.setProperty('--color-background', currentColors.background);
-        root.style.setProperty('--color-aside-background', currentColors.asideBackground);
-        root.style.setProperty('--color-aside-text', currentColors.asideText);
-        root.style.setProperty('--color-aside-active-text', currentColors.asideActiveText);
-        root.style.setProperty('--color-aside-active-background', currentColors.asideActiveBackground);
-        root.style.setProperty('--color-aside-scrollbar-thumb', currentColors.asideScrollbarThumb);
-        root.style.setProperty('--color-aside-scrollbar-thumb-hover', currentColors.asideScrollbarThumbHover);
-        root.style.setProperty('--sheet-close-icon-color', currentColors.closeSheetIcon);
+        root.style.setProperty('--color-surface', currentColors.surface);
+        
+        root.style.setProperty('--color-text-primary', currentColors.textPrimary);
+        root.style.setProperty('--color-text-secondary', currentColors.textSecondary);
+        root.style.setProperty('--color-text-tertiary', currentColors.textTertiary);
+        
+        root.style.setProperty('--color-border', currentColors.border);
+        root.style.setProperty('--color-hover', currentColors.hover);
+        root.style.setProperty('--color-active', currentColors.active);
+        
+        root.style.setProperty('--color-scrollbar', currentColors.scrollbar);
+        root.style.setProperty('--color-scrollbar-hover', currentColors.scrollbarHover);
+        
+        root.style.setProperty('--color-icon', currentColors.icon);
+        
+        root.style.setProperty('--color-aside-background', currentColors.surface);
+        root.style.setProperty('--color-aside-text', currentColors.textPrimary);
+        root.style.setProperty('--color-aside-active-text', currentColors.textPrimary);
+        root.style.setProperty('--color-aside-active-background', currentColors.active);
+        root.style.setProperty('--color-aside-scrollbar-thumb', currentColors.scrollbar);
+        root.style.setProperty('--color-aside-scrollbar-thumb-hover', currentColors.scrollbarHover);
+        root.style.setProperty('--sheet-close-icon-color', currentColors.icon);
+
+        root.style.setProperty('--color-card-background', currentColors.surface);
+
+        root.style.setProperty('--color-button-primary', currentColors.buttonPrimary);
+        root.style.setProperty('--color-button-primary-hover', currentColors.buttonPrimaryHover);
+        root.style.setProperty('--color-button-disabled', currentColors.buttonDisabled);
     }, [colorTheme, theme]);
 
     const toggleTheme = () => {

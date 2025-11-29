@@ -1,26 +1,32 @@
-import CustomCard from "@/components/CustomCard"
+import { useEffect } from "react"
 
-import PageHeading from "@/components/Heading";
-import { breadcrumb } from "@/settings/Dashboard";
+// Settings
+import { breadcrumb } from "@/settings/DashboardSetting"
 
 // Types
-import type  { BreadcrumbData } from "@/types/BreadCrumb";
+import type { BreadcrumbData } from "@/types/BreadCrumbType"
+
+// Components
+import { useLayoutContext } from "@/components/Layout"
+import CustomCard from "@/components/CustomCard"
 
 const Dashboard = () => {
     const breadcrumbData: BreadcrumbData = breadcrumb
+    const { setBreadcrumb } = useLayoutContext()
+
+    useEffect(() => {
+        setBreadcrumb(breadcrumbData.items)
+    }, [])
 
     return (
-        <>
-            <PageHeading breadcrumb = {breadcrumbData.items} />
-            <div className="p-5">
-                <CustomCard
-                    title="TỔNG BÁO CÁO"
-                    description="Đây là trang quản lý báo cáo, với các chức năng bên dưới"
-                >
-                    
-                </CustomCard>
-            </div>
-        </>
+        <div className="p-3">
+            <CustomCard
+                title="TRANG TỔNG BÁO CÁO"
+                description="Đây là trang quản lý báo cáo, với các chức năng bên dưới."
+            >
+                
+            </CustomCard>
+        </div>
     )
 }
 

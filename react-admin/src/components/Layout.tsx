@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Outlet } from "react-router-dom"
+import { Outlet, useOutletContext } from "react-router-dom"
 import Aside from "./Aside"
 import Header from "./Header"
 import Footer from "./Footer"
@@ -8,11 +8,18 @@ import { FaRedoAlt } from "react-icons/fa"
 import { useTheme } from "@/contexts/ThemeContext"
 import { colorThemes } from "@/constants/colors"
 
+type Crumb = { title: string; route: string }
+
+type ContextType = {
+    setBreadcrumb: (breadcrumb: Crumb | Crumb[]) => void
+}
+
 const Layout = () => {
     const [isCollapsed, setIsCollapsed] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
     const [isSheetOpen, setIsSheetOpen] = useState(false)
     const [isAsideSheetOpen, setIsAsideSheetOpen] = useState(false)
+    const [breadcrumb, setBreadcrumb] = useState<Crumb | Crumb[] | undefined>()
     const { colorTheme, setColorTheme } = useTheme()
 
     const toggleAside = () => {
@@ -104,7 +111,7 @@ const Layout = () => {
             {!isMobile && (
                 <div className={`
                     transition-[width] duration-500 ease-in-out
-                    ${isCollapsed ? "w-20" : "w-70"}
+                    ${isCollapsed ? "w-20" : "w-65"}
                 `}>
                     <Aside
                         isCollapsed={isCollapsed}
@@ -120,10 +127,11 @@ const Layout = () => {
                     isMobile={isMobile} 
                     onToggleAside={toggleAside}
                     onOpenSheet={openSheet}
+                    breadcrumb={breadcrumb}
                 />
 
                 <div className="flex-1 overflow-y-auto">
-                    <Outlet />
+                    <Outlet context={{ setBreadcrumb } satisfies ContextType} />
                 </div>
 
                 <Footer />
@@ -160,6 +168,10 @@ const Layout = () => {
             )}
         </div>
     )
+}
+
+export function useLayoutContext() {
+    return useOutletContext<ContextType>()
 }
 
 export default Layout

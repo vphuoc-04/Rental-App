@@ -6,9 +6,12 @@ import { ThemeProvider } from "@/contexts/ThemeContext"
 import './App.css'
 import './index.css'
 
+// Layouts
+import Layout from './components/Layout'
+
+// Modules
 import Login from './modules/Login'
 import Dashboard from './modules/Dashboard'
-import Layout from './components/Layout'
 
 const router = createBrowserRouter([
     {
@@ -20,9 +23,11 @@ const router = createBrowserRouter([
         element: <Layout />,
         children: [
             {
-                path: 'dashboard',
+                path: 'bao-cao',
                 element: <Dashboard />
-            }
+            },
+            {
+            },
         ]
     }
 ])

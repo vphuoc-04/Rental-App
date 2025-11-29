@@ -14,26 +14,43 @@ interface PageHeadingProps {
 
 const PageHeading: React.FC<PageHeadingProps> = ({ breadcrumb }) => {
     const crumbs: Crumb[] = Array.isArray(breadcrumb) ? breadcrumb : [breadcrumb]
-    const last = crumbs[crumbs.length - 1]
+    
+    const getVisibleCrumbs = () => {
+        if (crumbs.length <= 2) {
+            return crumbs
+        }
+        
+        return [crumbs[0], { title: "...", route: "#" }, crumbs[crumbs.length - 1]]
+    }
+
+    const visibleCrumbs = getVisibleCrumbs()
 
     return (
-        <div className="page-heading py-[20px] shadow-sm bg-white dark:bg-[#18181b] text-gray-900 dark:text-white">
-            <div className="px-[15px]">
-                <h2 className="text-[24px] mb-[5px] uppercase">{last?.title ?? ""}</h2>
-                <Breadcrumb>
-                    <BreadcrumbList>
-                        {crumbs.map((item, index) => (
-                            <React.Fragment key={`${item.route}-${index}`}>
-                                {index > 0 && <BreadcrumbSeparator />}
-                                <UIBreadcrumbItem>
-                                {/* <Link to={item.route}>{item.title}</Link> */}
-                                    <span>{item.title}</span>
-                                </UIBreadcrumbItem>
-                            </React.Fragment>
-                        ))}
-                    </BreadcrumbList>
-                </Breadcrumb>
-            </div>
+        <div className="flex flex-col min-w-0 flex-1">
+            <Breadcrumb>
+                <BreadcrumbList className="flex-wrap gap-1 md:flex-nowrap">
+                    {visibleCrumbs.map((item, index) => (
+                        <React.Fragment key={`${item.route}-${index}`}>
+                            {index > 0 && (
+                                <BreadcrumbSeparator className="text-[13px] xs:text-xs sm:text-sm text-[var(--color-text-tertiary)]" />
+                            )}
+                            <UIBreadcrumbItem className="max-w-none">
+                                <div className="flex items-center">
+                                    <span className="
+                                        text-[13px] xs:text-xs sm:text-sm 
+                                        text-[var(--color-text-secondary)]
+                                        truncate max-w-[80px] xs:max-w-[100px] sm:max-w-[120px]
+                                        md:max-w-none md:truncate-none md:whitespace-normal
+                                        block
+                                    ">
+                                        {item.title}
+                                    </span>
+                                </div>
+                            </UIBreadcrumbItem>
+                        </React.Fragment>
+                    ))}
+                </BreadcrumbList>
+            </Breadcrumb>
         </div>
     )
 }

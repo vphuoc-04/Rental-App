@@ -18,8 +18,8 @@ export const asideItem = [
             {
                 icon: <FaChartPie />,
                 label: 'Tổng báo cáo',
-                active: ['dashboard'],
-                to: '/admin/dashboard',
+                active: ['bao-cao'],
+                to: '/admin/bao-cao',
                 links: [
 
                 ] 
@@ -31,9 +31,9 @@ export const asideItem = [
         items: [
             {
                 icon: <FaHouseUser />,
-                label: 'Quản lý nhà',
-                active: '',
-                to: '',
+                label: 'Quản lý chung',
+                active: '[quan-ly-chung]',
+                to: '/admin/quan-ly-chung',
                 links: [
                     
                 ]   

@@ -19,12 +19,15 @@ const CustomPopover = ({ title, description, className, icons, children, actions
             <PopoverTrigger className={`flex items-center justify-center ${className}`}>
                 {icons}
             </PopoverTrigger>
-            <PopoverContent className="w-96" align="start">
+            <PopoverContent 
+                className="w-96 bg-[var(--color-background)] border-[var(--color-border)]" 
+                align="start"
+            >
                 <div className="flex flex-col space-y-4">
                     <div className="flex justify-between items-center">
                         <div className="">
-                            <span className="text-gray-900 dark:text-white font-medium">{title}</span>
-                            <span className="text-gray-500 dark:text-gray-400 text-sm block mt-1">{description}</span>
+                            <span className="text-[var(--color-text-primary)] font-medium">{title}</span>
+                            <span className="text-[var(--color-text-secondary)] text-sm block mt-1">{description}</span>
                         </div>
                         {actions && ( 
                             <div className="flex items-center gap-1">

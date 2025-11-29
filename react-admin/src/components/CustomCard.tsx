@@ -19,17 +19,17 @@ interface CustomCardProps {
 
 const CustomCard = ({title, description, className, children, footer, action} : CustomCardProps) => {
     return (
-        <Card className={`bg-white dark:bg-[#27272A] border-gray-200 dark:border-gray-700 ${className}`}>
+        <Card className={`bg-[var(--color-card-background)] border-[var(--color-border)] ${className}`}>
             <CardHeader>
-                <CardTitle className="text-gray-900 dark:text-white">{title}</CardTitle>
-                <CardDescription className="text-gray-500 dark:text-gray-400">{description}</CardDescription>
+                <CardTitle className="text-[var(--color-text-primary)]">{title}</CardTitle>
+                <CardDescription className="text-[var(--color-text-secondary)]">{description}</CardDescription>
                 {action && <CardAction>{action}</CardAction>}
             </CardHeader>
-            <CardContent className="text-gray-700 dark:text-gray-300">
+            <CardContent className="text-[var(--color-text-primary)]">
                 {children}
             </CardContent>
             {footer && (
-                <CardFooter className="flex-col gap-2 text-gray-600 dark:text-gray-400">
+                <CardFooter className="flex-col gap-2 text-[var(--color-text-secondary)]">
                     {footer}
                 </CardFooter>
             )}
